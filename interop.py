@@ -133,7 +133,7 @@ class InteropRunner:
             "SERVER="
             + self._implementations[name]["image"]
             + " "  # only needed so docker compose doesn't complain
-            "docker compose --env-file empty.env up --timeout 0 --abort-on-container-exit -V sim client"
+            "docker-compose --env-file empty.env up --timeout 0 --abort-on-container-exit -V sim client"
         )
         output = subprocess.run(
             cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
@@ -159,7 +159,7 @@ class InteropRunner:
             + self._implementations[name]["image"]
             + " "  # only needed so docker compose doesn't complain
             "SERVER=" + self._implementations[name]["image"] + " "
-            "docker compose --env-file empty.env up -V server"
+            "docker-compose --env-file empty.env up -V server"
         )
         output = subprocess.run(
             cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
@@ -367,7 +367,7 @@ class InteropRunner:
         containers = "sim client server " + " ".join(testcase.additional_containers())
         cmd = (
             params
-            + " docker compose --env-file empty.env up --abort-on-container-exit --timeout 1 "
+            + " docker-compose --env-file empty.env up --abort-on-container-exit --timeout 1 "
             + containers
         )
         logging.debug("Command: %s", cmd)
@@ -393,7 +393,7 @@ class InteropRunner:
         if expired:
             logging.debug("Test failed: took longer than %ds.", testcase.timeout())
             r = subprocess.run(
-                "docker compose --env-file empty.env stop " + containers,
+                "docker-compose --env-file empty.env stop " + containers,
                 shell=True,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
